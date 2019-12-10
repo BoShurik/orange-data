@@ -1,0 +1,36 @@
+{
+    "name": "boshurik/orange-data",
+    "description": "OrangeData client",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "BoShurik",
+            "email": "boshurik@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BoShurik\\OrangeData\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BoShurik\\OrangeData\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "guzzlehttp/guzzle": "^6.5",
+        "beberlei/assert": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit --colors=always",
+        "test": "@tests"
+    }
+}
