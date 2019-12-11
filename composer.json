@@ -31,6 +31,7 @@
     },
     "scripts": {
         "tests": "vendor/bin/phpunit --colors=always",
-        "test": "@tests"
+        "test": "@tests",
+        "coverage": "vendor/bin/phpunit --coverage-html build/coverage"
     }
 }
