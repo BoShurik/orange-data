@@ -85,7 +85,7 @@ trait FactoryTrait
             if (is_array($value)) {
                 $value = array_map(function ($data) use ($class) {
                     if (is_array($data)) {
-                        call_user_func([$class, 'create'], $data);
+                        return call_user_func([$class, 'create'], $data);
                     }
 
                     return $data;
