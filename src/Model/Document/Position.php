@@ -135,53 +135,17 @@ class Position implements \JsonSerializable
         string $quantity,
         string $price,
         int $tax,
-        string $text,
-        ?int $paymentMethodType,
-        ?int $paymentSubjectType,
-        ?string $nomenclatureCode,
-        ?Supplier $supplierInfo,
-        ?string $supplierINN,
-        ?int $agentType,
-        ?Agent $agentInfo,
-        ?string $unitOfMeasurement,
-        ?string $additionalAttribute,
-        ?string $manufacturerCountryCode,
-        ?string $customsDeclarationNumber,
-        ?string $excise
+        string $text
     ) {
         Assertion::numeric($quantity);
         Assertion::numeric($price);
         Assertion::between($tax, 1, 6);
         Assertion::maxLength($text, 128);
-        Assertion::nullOrBetween($paymentMethodType, 1, 7);
-        Assertion::nullOrBetween($paymentSubjectType, 1, 19);
-        Assertion::nullOrBase64($nomenclatureCode);
-        if ($supplierINN !== null) {
-            Assertion::inArray(\strlen($supplierINN), [10, 12]);
-        }
-        Assertion::nullOrBetween($agentType, 1, 127);
-        Assertion::nullOrBetweenLength($unitOfMeasurement, 1, 16);
-        Assertion::nullOrBetweenLength($additionalAttribute, 1, 64);
-        Assertion::nullOrBetweenLength($manufacturerCountryCode, 1, 3);
-        Assertion::nullOrBetweenLength($customsDeclarationNumber, 1, 32);
-        Assertion::nullOrNumeric($excise);
 
         $this->quantity = $quantity;
         $this->price = $price;
         $this->tax = $tax;
         $this->text = $text;
-        $this->paymentMethodType = $paymentMethodType;
-        $this->paymentSubjectType = $paymentSubjectType;
-        $this->nomenclatureCode = $nomenclatureCode;
-        $this->supplierInfo = $supplierInfo;
-        $this->supplierINN = $supplierINN;
-        $this->agentType = $agentType;
-        $this->agentInfo = $agentInfo;
-        $this->unitOfMeasurement = $unitOfMeasurement;
-        $this->additionalAttribute = $additionalAttribute;
-        $this->manufacturerCountryCode = $manufacturerCountryCode;
-        $this->customsDeclarationNumber = $customsDeclarationNumber;
-        $this->excise = $excise;
     }
 
     public function getQuantity(): string
@@ -209,9 +173,27 @@ class Position implements \JsonSerializable
         return $this->paymentMethodType;
     }
 
+    public function setPaymentMethodType(?int $paymentMethodType): Position
+    {
+        Assertion::nullOrBetween($paymentMethodType, 1, 7);
+
+        $this->paymentMethodType = $paymentMethodType;
+
+        return $this;
+    }
+
     public function getPaymentSubjectType(): ?int
     {
         return $this->paymentSubjectType;
+    }
+
+    public function setPaymentSubjectType(?int $paymentSubjectType): Position
+    {
+        Assertion::nullOrBetween($paymentSubjectType, 1, 19);
+
+        $this->paymentSubjectType = $paymentSubjectType;
+
+        return $this;
     }
 
     public function getNomenclatureCode(): ?string
@@ -219,9 +201,25 @@ class Position implements \JsonSerializable
         return $this->nomenclatureCode;
     }
 
+    public function setNomenclatureCode(?string $nomenclatureCode): Position
+    {
+        Assertion::nullOrBase64($nomenclatureCode);
+
+        $this->nomenclatureCode = $nomenclatureCode;
+
+        return $this;
+    }
+
     public function getSupplierInfo(): ?Supplier
     {
         return $this->supplierInfo;
+    }
+
+    public function setSupplierInfo(?Supplier $supplierInfo): Position
+    {
+        $this->supplierInfo = $supplierInfo;
+
+        return $this;
     }
 
     public function getSupplierINN(): ?string
@@ -229,9 +227,29 @@ class Position implements \JsonSerializable
         return $this->supplierINN;
     }
 
+    public function setSupplierINN(?string $supplierINN): Position
+    {
+        if ($supplierINN !== null) {
+            Assertion::inArray(\strlen($supplierINN), [10, 12]);
+        }
+
+        $this->supplierINN = $supplierINN;
+
+        return $this;
+    }
+
     public function getAgentType(): ?int
     {
         return $this->agentType;
+    }
+
+    public function setAgentType(?int $agentType): Position
+    {
+        Assertion::nullOrBetween($agentType, 1, 127);
+
+        $this->agentType = $agentType;
+
+        return $this;
     }
 
     public function getAgentInfo(): ?Agent
@@ -239,9 +257,25 @@ class Position implements \JsonSerializable
         return $this->agentInfo;
     }
 
+    public function setAgentInfo(?Agent $agentInfo): Position
+    {
+        $this->agentInfo = $agentInfo;
+
+        return $this;
+    }
+
     public function getUnitOfMeasurement(): ?string
     {
         return $this->unitOfMeasurement;
+    }
+
+    public function setUnitOfMeasurement(?string $unitOfMeasurement): Position
+    {
+        Assertion::nullOrBetweenLength($unitOfMeasurement, 1, 16);
+
+        $this->unitOfMeasurement = $unitOfMeasurement;
+
+        return $this;
     }
 
     public function getAdditionalAttribute(): ?string
@@ -249,9 +283,27 @@ class Position implements \JsonSerializable
         return $this->additionalAttribute;
     }
 
+    public function setAdditionalAttribute(?string $additionalAttribute): Position
+    {
+        Assertion::nullOrBetweenLength($additionalAttribute, 1, 64);
+
+        $this->additionalAttribute = $additionalAttribute;
+
+        return $this;
+    }
+
     public function getManufacturerCountryCode(): ?string
     {
         return $this->manufacturerCountryCode;
+    }
+
+    public function setManufacturerCountryCode(?string $manufacturerCountryCode): Position
+    {
+        Assertion::nullOrBetweenLength($manufacturerCountryCode, 1, 3);
+
+        $this->manufacturerCountryCode = $manufacturerCountryCode;
+
+        return $this;
     }
 
     public function getCustomsDeclarationNumber(): ?string
@@ -259,8 +311,26 @@ class Position implements \JsonSerializable
         return $this->customsDeclarationNumber;
     }
 
+    public function setCustomsDeclarationNumber(?string $customsDeclarationNumber): Position
+    {
+        Assertion::nullOrBetweenLength($customsDeclarationNumber, 1, 32);
+
+        $this->customsDeclarationNumber = $customsDeclarationNumber;
+
+        return $this;
+    }
+
     public function getExcise(): ?string
     {
         return $this->excise;
+    }
+
+    public function setExcise(?string $excise): Position
+    {
+        Assertion::nullOrNumeric($excise);
+
+        $this->excise = $excise;
+
+        return $this;
     }
 }

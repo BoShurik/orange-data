@@ -27,11 +27,6 @@ class Document implements \JsonSerializable
     private $inn;
 
     /**
-     * @var string
-     */
-    private $key;
-
-    /**
      * @var Content
      */
     private $content;
@@ -42,25 +37,24 @@ class Document implements \JsonSerializable
     private $callbackUrl;
 
     /**
+     * @var string
+     */
+    private $key;
+
+    /**
      * @var string|null
      */
     private $group;
 
-    public function __construct(string $id, string $inn, Content $content, ?string $callbackUrl = null, ?string $key = null, ?string $group = null)
+    public function __construct(string $id, string $inn, Content $content)
     {
         $this->id = $id;
         $this->inn = $inn;
         $this->key = $key ?? $inn;
         $this->content = $content;
-        $this->callbackUrl = $callbackUrl;
-        $this->group = $group;
 
         Assertion::betweenLength($this->id, 1, 64);
         Assertion::inArray(\strlen($this->inn), [10, 12]);
-        Assertion::betweenLength($this->key, 1, 32);
-        Assertion::nullOrBetweenLength($this->callbackUrl, 1, 1024);
-        Assertion::nullOrBetweenLength($this->group, 1, 32);
-        Assertion::nullOrUrl($this->callbackUrl);
     }
 
     public function getId(): string
@@ -73,11 +67,6 @@ class Document implements \JsonSerializable
         return $this->inn;
     }
 
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
     public function getContent(): Content
     {
         return $this->content;
@@ -88,8 +77,41 @@ class Document implements \JsonSerializable
         return $this->callbackUrl;
     }
 
+    public function setCallbackUrl(?string $callbackUrl): Document
+    {
+        Assertion::nullOrBetweenLength($callbackUrl, 1, 1024);
+        Assertion::nullOrUrl($callbackUrl);
+
+        $this->callbackUrl = $callbackUrl;
+
+        return $this;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function setKey(string $key): Document
+    {
+        Assertion::betweenLength($key, 1, 32);
+
+        $this->key = $key;
+
+        return $this;
+    }
+
     public function getGroup(): ?string
     {
         return $this->group;
+    }
+
+    public function setGroup(?string $group): Document
+    {
+        Assertion::nullOrBetweenLength($group, 1, 32);
+
+        $this->group = $group;
+
+        return $this;
     }
 }

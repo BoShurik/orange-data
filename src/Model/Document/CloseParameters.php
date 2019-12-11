@@ -14,7 +14,9 @@ use BoShurik\OrangeData\Model\JsonSerializableTrait;
 class CloseParameters implements \JsonSerializable
 {
     use JsonSerializableTrait;
-    use FactoryTrait;
+    use FactoryTrait {
+        getMapping as doGetMapping;
+    }
 
     public const TAXATION_SYSTEM_COMMON = 0;
     public const TAXATION_SYSTEM_SIMPLIFIED = 1;
@@ -54,5 +56,13 @@ class CloseParameters implements \JsonSerializable
     public function getTaxationSystem(): int
     {
         return $this->taxationSystem;
+    }
+
+    protected static function getMapping(\ReflectionClass $reflectionClass): array
+    {
+        $mapping = self::doGetMapping($reflectionClass);
+        $mapping['payments'] = Payment::class.'[]';
+
+        return $mapping;
     }
 }

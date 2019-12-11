@@ -7,35 +7,100 @@
 
 namespace BoShurik\OrangeData\Model;
 
+use Assert\Assertion;
+
 trait FactoryTrait
 {
     public static function create(array $parameters): self
     {
         $reflectionClass = new \ReflectionClass(self::class);
-        $constructorReflectionMethod = $reflectionClass->getMethod('__construct');
+        $mapping = self::getMapping($reflectionClass);
+
         $constructorParameters = [];
-        foreach ($constructorReflectionMethod->getParameters() as $reflectionParameter) {
-            $name = $reflectionParameter->getName();
-            if (isset($parameters[$name])) {
-                if ($reflectionParameterClass = $reflectionParameter->getClass()) {
-                    $class = $reflectionParameterClass->getName();
-                    if ($parameters[$name] instanceof $class) {
-                        $constructorParameters[$name] = $parameters[$name];
-                    } elseif (is_callable([$class, 'create']) && is_array($parameters[$name])) {
-                        $constructorParameters[$name] = call_user_func_array([$class, 'create'], $parameters[$name]);
-                    } else {
-                        throw new \LogicException(sprintf('Wrong type for %s parameter', $name));
-                    }
-                } else {
-                    $constructorParameters[$name] = $parameters[$name];
-                }
-            } elseif ($reflectionParameter->allowsNull()) {
-                $constructorParameters[$name] = null;
-            } else {
-                throw new \LogicException(sprintf('Undefined %s parameter', $name));
+        $classParameters = [];
+        foreach ($mapping as $name => $type) {
+            if ($type === true) {
+                Assertion::keyExists($parameters, $name);
+
+                $constructorParameters[$name] = $parameters[$name];
+            } elseif (is_string($type) && substr($type, 0, 1) !== '?') {
+                Assertion::keyExists($parameters, $name);
+
+                $constructorParameters[$name] = self::processValue($type, $parameters[$name]);
+            } elseif (isset($parameters[$name])) {
+                $classParameters[$name] = self::processValue($type, $parameters[$name]);
             }
         }
 
-        return $reflectionClass->newInstanceArgs($constructorParameters);
+        /** @var self $instance */
+        $instance = $reflectionClass->newInstanceArgs($constructorParameters);
+
+        foreach ($classParameters as $name => $value) {
+            $method = sprintf('set%s', ucfirst($name));
+            call_user_func([$instance, $method], self::processValue($mapping[$name], $parameters[$name]));
+        }
+
+        return $instance;
+    }
+
+    protected static function getMapping(\ReflectionClass $reflectionClass): array
+    {
+        $fields = [];
+
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            $fields[$reflectionProperty->getName()] = false;
+        }
+
+        $constructorReflectionMethod = $reflectionClass->getMethod('__construct');
+        // Assume properties and constructor parameters have same names
+        foreach ($constructorReflectionMethod->getParameters() as $reflectionParameter) {
+            if ($reflectionParameter->getClass()) {
+                $fields[$reflectionParameter->getName()] = $reflectionParameter->getClass();
+            }
+            if (!$reflectionParameter->allowsNull()) {
+                $fields[$reflectionParameter->getName()] = true;
+            } elseif (is_string($fields[$reflectionParameter->getName()])) {
+                $fields[$reflectionParameter->getName()] = '?'. $fields[$reflectionParameter->getName()];
+            }
+        }
+
+        return $fields;
+    }
+
+    private static function processValue($type, $value)
+    {
+        if (is_bool($type)) {
+            return $value;
+        }
+
+        $iterable = substr($type, -2) === '[]';
+        $optional = substr($type, 0, 1) === '?';
+        $class = substr($type, $optional ? 1 : 0, $iterable ? -2 : null);
+
+        if ($optional && $value === null) {
+            return $value;
+        }
+
+        if ($iterable) {
+            if (is_array($value)) {
+                $value = array_map(function ($data) use ($class) {
+                    if (is_array($data)) {
+                        call_user_func([$class, 'create'], $data);
+                    }
+
+                    return $data;
+                }, $value);
+            }
+
+            Assertion::allIsInstanceOf($value, $class);
+        } else {
+            if (is_array($value)) {
+                $value = call_user_func([$class, 'create'], $value);
+            }
+
+            Assertion::isInstanceOf($value, $class);
+        }
+
+        return $value;
     }
 }

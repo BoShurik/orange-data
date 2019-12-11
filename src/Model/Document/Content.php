@@ -19,7 +19,9 @@ class Content implements \JsonSerializable
     public const TYPE_OUT_REFUND = 4;
 
     use JsonSerializableTrait;
-    use FactoryTrait;
+    use FactoryTrait {
+        getMapping as doGetMapping;
+    }
 
     /**
      * @var int
@@ -138,82 +140,17 @@ class Content implements \JsonSerializable
         int $type,
         iterable $positions,
         CloseParameters $checkClose,
-        string $customerContact,
-        ?int $agentType = null,
-        ?iterable $paymentTransferOperatorPhoneNumbers = null,
-        ?string $paymentAgentOperation = null,
-        ?iterable $paymentAgentPhoneNumbers = null,
-        ?iterable $paymentOperatorPhoneNumbers = null,
-        ?string $paymentOperatorName = null,
-        ?string $paymentOperatorAddress = null,
-        ?string $paymentOperatorINN = null,
-        ?iterable $supplierPhoneNumbers = null,
-        ?UserAttribute $additionalUserAttribute = null,
-        ?string $automatNumber = null,
-        ?string $settlementAddress = null,
-        ?string $settlementPlace = null,
-        ?string $customer = null,
-        ?string $customerINN = null,
-        ?string $cashier = null,
-        ?string $cashierINN = null,
-        ?string $senderEmail = null
+        string $customerContact
     ) {
         Assertion::between($type, 1, 4);
         Assertion::minCount($positions, 1);
         Assertion::allIsInstanceOf($positions, Position::class);
         Assertion::betweenLength($customerContact, 1, 64);
-        Assertion::nullOrBetween($agentType, 1, 127);
-        if ($paymentTransferOperatorPhoneNumbers !== null) {
-            Assertion::allBetweenLength($paymentTransferOperatorPhoneNumbers, 1, 19);
-        }
-        Assertion::nullOrBetweenLength($paymentAgentOperation, 1, 24);
-        if ($paymentAgentPhoneNumbers !== null) {
-            Assertion::allBetweenLength($paymentAgentPhoneNumbers, 1, 19);
-        }
-        if ($paymentOperatorPhoneNumbers !== null) {
-            Assertion::allBetweenLength($paymentOperatorPhoneNumbers, 1, 19);
-        }
-        Assertion::nullOrBetweenLength($paymentOperatorName, 1, 64);
-        Assertion::nullOrBetweenLength($paymentOperatorAddress, 1, 243);
-        if ($paymentOperatorINN !== null) {
-            Assertion::inArray(\strlen($paymentOperatorINN), [10, 12]);
-        }
-        if ($supplierPhoneNumbers !== null) {
-            Assertion::allBetweenLength($supplierPhoneNumbers, 1, 19);
-        }
-        Assertion::nullOrBetweenLength($automatNumber, 1, 20);
-        Assertion::nullOrBetweenLength($settlementAddress, 1, 243);
-        Assertion::nullOrBetweenLength($settlementPlace, 1, 243);
-        Assertion::nullOrBetweenLength($customer, 1, 243);
-        if ($customerINN !== null) {
-            Assertion::inArray(\strlen($customerINN), [10, 12]);
-        }
-        Assertion::nullOrBetweenLength($cashier, 1, 64);
-        Assertion::nullOrLength($cashierINN, 12);
-        Assertion::nullOrBetweenLength($senderEmail, 1, 64);
 
         $this->type = $type;
         $this->positions = $positions;
         $this->checkClose = $checkClose;
         $this->customerContact = $customerContact;
-        $this->agentType = $agentType;
-        $this->paymentTransferOperatorPhoneNumbers = $paymentTransferOperatorPhoneNumbers;
-        $this->paymentAgentOperation = $paymentAgentOperation;
-        $this->paymentAgentPhoneNumbers = $paymentAgentPhoneNumbers;
-        $this->paymentOperatorPhoneNumbers = $paymentOperatorPhoneNumbers;
-        $this->paymentOperatorName = $paymentOperatorName;
-        $this->paymentOperatorAddress = $paymentOperatorAddress;
-        $this->paymentOperatorINN = $paymentOperatorINN;
-        $this->supplierPhoneNumbers = $supplierPhoneNumbers;
-        $this->additionalUserAttribute = $additionalUserAttribute;
-        $this->automatNumber = $automatNumber;
-        $this->settlementAddress = $settlementAddress;
-        $this->settlementPlace = $settlementPlace;
-        $this->customer = $customer;
-        $this->customerINN = $customerINN;
-        $this->cashier = $cashier;
-        $this->cashierINN = $cashierINN;
-        $this->senderEmail = $senderEmail;
     }
 
     public function getType(): int
@@ -241,9 +178,29 @@ class Content implements \JsonSerializable
         return $this->agentType;
     }
 
+    public function setAgentType(?int $agentType): Content
+    {
+        Assertion::nullOrBetween($agentType, 1, 127);
+
+        $this->agentType = $agentType;
+
+        return $this;
+    }
+
     public function getPaymentTransferOperatorPhoneNumbers(): ?iterable
     {
         return $this->paymentTransferOperatorPhoneNumbers;
+    }
+
+    public function setPaymentTransferOperatorPhoneNumbers(?iterable $paymentTransferOperatorPhoneNumbers): Content
+    {
+        if ($paymentTransferOperatorPhoneNumbers !== null) {
+            Assertion::allBetweenLength($paymentTransferOperatorPhoneNumbers, 1, 19);
+        }
+
+        $this->paymentTransferOperatorPhoneNumbers = $paymentTransferOperatorPhoneNumbers;
+
+        return $this;
     }
 
     public function getPaymentAgentOperation(): ?string
@@ -251,9 +208,29 @@ class Content implements \JsonSerializable
         return $this->paymentAgentOperation;
     }
 
+    public function setPaymentAgentOperation(?string $paymentAgentOperation): Content
+    {
+        Assertion::nullOrBetweenLength($paymentAgentOperation, 1, 24);
+
+        $this->paymentAgentOperation = $paymentAgentOperation;
+
+        return $this;
+    }
+
     public function getPaymentAgentPhoneNumbers(): ?iterable
     {
         return $this->paymentAgentPhoneNumbers;
+    }
+
+    public function setPaymentAgentPhoneNumbers(?iterable $paymentAgentPhoneNumbers): Content
+    {
+        if ($paymentAgentPhoneNumbers !== null) {
+            Assertion::allBetweenLength($paymentAgentPhoneNumbers, 1, 19);
+        }
+
+        $this->paymentAgentPhoneNumbers = $paymentAgentPhoneNumbers;
+
+        return $this;
     }
 
     public function getPaymentOperatorPhoneNumbers(): ?iterable
@@ -261,9 +238,29 @@ class Content implements \JsonSerializable
         return $this->paymentOperatorPhoneNumbers;
     }
 
+    public function setPaymentOperatorPhoneNumbers(?iterable $paymentOperatorPhoneNumbers): Content
+    {
+        if ($paymentOperatorPhoneNumbers !== null) {
+            Assertion::allBetweenLength($paymentOperatorPhoneNumbers, 1, 19);
+        }
+
+        $this->paymentOperatorPhoneNumbers = $paymentOperatorPhoneNumbers;
+
+        return $this;
+    }
+
     public function getPaymentOperatorName(): ?string
     {
         return $this->paymentOperatorName;
+    }
+
+    public function setPaymentOperatorName(?string $paymentOperatorName): Content
+    {
+        Assertion::nullOrBetweenLength($paymentOperatorName, 1, 64);
+
+        $this->paymentOperatorName = $paymentOperatorName;
+
+        return $this;
     }
 
     public function getPaymentOperatorAddress(): ?string
@@ -271,9 +268,29 @@ class Content implements \JsonSerializable
         return $this->paymentOperatorAddress;
     }
 
+    public function setPaymentOperatorAddress(?string $paymentOperatorAddress): Content
+    {
+        Assertion::nullOrBetweenLength($paymentOperatorAddress, 1, 243);
+
+        $this->paymentOperatorAddress = $paymentOperatorAddress;
+
+        return $this;
+    }
+
     public function getPaymentOperatorINN(): ?string
     {
         return $this->paymentOperatorINN;
+    }
+
+    public function setPaymentOperatorINN(?string $paymentOperatorINN): Content
+    {
+        if ($paymentOperatorINN !== null) {
+            Assertion::inArray(\strlen($paymentOperatorINN), [10, 12]);
+        }
+
+        $this->paymentOperatorINN = $paymentOperatorINN;
+
+        return $this;
     }
 
     public function getSupplierPhoneNumbers(): ?iterable
@@ -281,9 +298,27 @@ class Content implements \JsonSerializable
         return $this->supplierPhoneNumbers;
     }
 
+    public function setSupplierPhoneNumbers(?iterable $supplierPhoneNumbers): Content
+    {
+        if ($supplierPhoneNumbers !== null) {
+            Assertion::allBetweenLength($supplierPhoneNumbers, 1, 19);
+        }
+
+        $this->supplierPhoneNumbers = $supplierPhoneNumbers;
+
+        return $this;
+    }
+
     public function getAdditionalUserAttribute(): ?UserAttribute
     {
         return $this->additionalUserAttribute;
+    }
+
+    public function setAdditionalUserAttribute(?UserAttribute $additionalUserAttribute): Content
+    {
+        $this->additionalUserAttribute = $additionalUserAttribute;
+
+        return $this;
     }
 
     public function getAutomatNumber(): ?string
@@ -291,9 +326,27 @@ class Content implements \JsonSerializable
         return $this->automatNumber;
     }
 
+    public function setAutomatNumber(?string $automatNumber): Content
+    {
+        Assertion::nullOrBetweenLength($automatNumber, 1, 20);
+
+        $this->automatNumber = $automatNumber;
+
+        return $this;
+    }
+
     public function getSettlementAddress(): ?string
     {
         return $this->settlementAddress;
+    }
+
+    public function setSettlementAddress(?string $settlementAddress): Content
+    {
+        Assertion::nullOrBetweenLength($settlementAddress, 1, 243);
+
+        $this->settlementAddress = $settlementAddress;
+
+        return $this;
     }
 
     public function getSettlementPlace(): ?string
@@ -301,9 +354,27 @@ class Content implements \JsonSerializable
         return $this->settlementPlace;
     }
 
+    public function setSettlementPlace(?string $settlementPlace): Content
+    {
+        Assertion::nullOrBetweenLength($settlementPlace, 1, 243);
+
+        $this->settlementPlace = $settlementPlace;
+
+        return $this;
+    }
+
     public function getCustomer(): ?string
     {
         return $this->customer;
+    }
+
+    public function setCustomer(?string $customer): Content
+    {
+        Assertion::nullOrBetweenLength($customer, 1, 243);
+
+        $this->customer = $customer;
+
+        return $this;
     }
 
     public function getCustomerINN(): ?string
@@ -311,9 +382,29 @@ class Content implements \JsonSerializable
         return $this->customerINN;
     }
 
+    public function setCustomerINN(?string $customerINN): Content
+    {
+        if ($customerINN !== null) {
+            Assertion::inArray(\strlen($customerINN), [10, 12]);
+        }
+
+        $this->customerINN = $customerINN;
+
+        return $this;
+    }
+
     public function getCashier(): ?string
     {
         return $this->cashier;
+    }
+
+    public function setCashier(?string $cashier): Content
+    {
+        Assertion::nullOrBetweenLength($cashier, 1, 64);
+
+        $this->cashier = $cashier;
+
+        return $this;
     }
 
     public function getCashierINN(): ?string
@@ -321,8 +412,35 @@ class Content implements \JsonSerializable
         return $this->cashierINN;
     }
 
+    public function setCashierINN(?string $cashierINN): Content
+    {
+        Assertion::nullOrLength($cashierINN, 12);
+
+        $this->cashierINN = $cashierINN;
+
+        return $this;
+    }
+
     public function getSenderEmail(): ?string
     {
         return $this->senderEmail;
     }
+
+    public function setSenderEmail(?string $senderEmail): Content
+    {
+        Assertion::nullOrBetweenLength($senderEmail, 1, 64);
+
+        $this->senderEmail = $senderEmail;
+
+        return $this;
+    }
+
+    protected static function getMapping(\ReflectionClass $reflectionClass): array
+    {
+        $mapping = self::doGetMapping($reflectionClass);
+        $mapping['positions'] = Position::class.'[]';
+
+        return $mapping;
+    }
+
 }
