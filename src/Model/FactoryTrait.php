@@ -55,12 +55,9 @@ trait FactoryTrait
         // Assume properties and constructor parameters have same names
         foreach ($constructorReflectionMethod->getParameters() as $reflectionParameter) {
             if ($reflectionParameter->getClass()) {
-                $fields[$reflectionParameter->getName()] = $reflectionParameter->getClass();
-            }
-            if (!$reflectionParameter->allowsNull()) {
+                $fields[$reflectionParameter->getName()] = sprintf('%s%s', $reflectionParameter->allowsNull() ? '?' : '', $reflectionParameter->getClass()->getName());
+            } elseif (!$reflectionParameter->allowsNull()) {
                 $fields[$reflectionParameter->getName()] = true;
-            } elseif (is_string($fields[$reflectionParameter->getName()])) {
-                $fields[$reflectionParameter->getName()] = '?'. $fields[$reflectionParameter->getName()];
             }
         }
 
@@ -75,7 +72,11 @@ trait FactoryTrait
 
         $iterable = substr($type, -2) === '[]';
         $optional = substr($type, 0, 1) === '?';
-        $class = substr($type, $optional ? 1 : 0, $iterable ? -2 : null);
+        if ($iterable) {
+            $class = substr($type, $optional ? 1 : 0, -2);
+        } else {
+            $class = substr($type, $optional ? 1 : 0);
+        }
 
         if ($optional && $value === null) {
             return $value;

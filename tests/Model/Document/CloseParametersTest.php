@@ -23,7 +23,6 @@ class CloseParametersTest extends ModelTestCase
     {
         $this->payment = $this->createMock(Payment::class);
         $this->payment
-            ->expects($this->atLeastOnce())
             ->method('jsonSerialize')
             ->willReturn([])
         ;

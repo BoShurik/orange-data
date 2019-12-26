@@ -37,6 +37,24 @@ abstract class ModelTestCase extends TestCase
         $this->assertJsonSerializableMinimal($data);
     }
 
+    public function testGetters()
+    {
+        $class = $this->getClass();
+
+        /** @var \JsonSerializable $model */
+        $model = $class::create($this->getFullParameters());
+        foreach ($this->getGetterResults() as $field => $value) {
+            $result = call_user_func([$model, $field]);
+            if ($result instanceof \DateTimeInterface) {
+                $this->assertEquals(new \DateTimeImmutable($value), $result);
+            } elseif (is_scalar($result)) {
+                $this->assertSame($value, $result);
+            } else {
+                // TODO: Assert class
+            }
+        }
+    }
+
     protected function assertJsonSerializableFull(array $data)
     {
         foreach ($this->getFullResults() as $name => $value) {
@@ -70,6 +88,16 @@ abstract class ModelTestCase extends TestCase
         return array_filter($this->getMinimalParameters(), function ($value) {
             return $this->useAsAResult($value);
         });
+    }
+
+    protected function getGetterResults(): array
+    {
+        $results = [];
+        foreach ($this->getFullResults() as $name => $value) {
+            $results[sprintf('get%s', ucfirst($name))] = $value;
+        }
+
+        return $results;
     }
 
     abstract protected function getClass(): string;

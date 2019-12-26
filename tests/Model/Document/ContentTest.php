@@ -29,14 +29,12 @@ class ContentTest extends ModelTestCase
     {
         $this->closeParameters = $this->createMock(CloseParameters::class);
         $this->closeParameters
-            ->expects($this->atLeastOnce())
             ->method('jsonSerialize')
             ->willReturn([])
         ;
 
         $this->position = $this->createMock(Position::class);
         $this->position
-            ->expects($this->atLeastOnce())
             ->method('jsonSerialize')
             ->willReturn([])
         ;

@@ -23,7 +23,6 @@ class DocumentTest extends ModelTestCase
     {
         $this->content = $this->createMock(Content::class);
         $this->content
-            ->expects($this->atLeastOnce())
             ->method('jsonSerialize')
             ->willReturn([])
         ;

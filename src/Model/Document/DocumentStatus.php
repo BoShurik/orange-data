@@ -8,10 +8,12 @@
 namespace BoShurik\OrangeData\Model\Document;
 
 use BoShurik\OrangeData\Model\FactoryTrait;
+use BoShurik\OrangeData\Model\JsonSerializableTrait;
 
 class DocumentStatus
 {
     use FactoryTrait;
+    use JsonSerializableTrait;
 
     /**
      * @var string

@@ -12,6 +12,9 @@ trait JsonSerializableTrait
     public function jsonSerialize()
     {
         return array_filter(array_map(function ($value) {
+            if ($value instanceof \DateTimeInterface) {
+                return $value->format('c');
+            }
             if ($value instanceof \JsonSerializable) {
                 return $value->jsonSerialize();
             }
