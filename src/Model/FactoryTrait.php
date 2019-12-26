@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Model;
 
-use Assert\Assertion;
+use BoShurik\OrangeData\Assertion;
 
 trait FactoryTrait
 {

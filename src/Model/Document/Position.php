@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Model\Document;
 
-use Assert\Assertion;
+use BoShurik\OrangeData\Assertion;
 use BoShurik\OrangeData\Model\FactoryTrait;
 use BoShurik\OrangeData\Model\JsonSerializableTrait;
 
@@ -230,7 +230,7 @@ class Position implements \JsonSerializable
     public function setSupplierINN(?string $supplierINN): Position
     {
         if ($supplierINN !== null) {
-            Assertion::inArray(\strlen($supplierINN), [10, 12]);
+            Assertion::inn($supplierINN);
         }
 
         $this->supplierINN = $supplierINN;

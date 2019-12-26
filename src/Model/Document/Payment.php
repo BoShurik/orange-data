@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Model\Document;
 
-use Assert\Assertion;
+use BoShurik\OrangeData\Assertion;
 use BoShurik\OrangeData\Model\FactoryTrait;
 use BoShurik\OrangeData\Model\JsonSerializableTrait;
 

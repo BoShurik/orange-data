@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Model\Document;
 
-use Assert\Assertion;
+use BoShurik\OrangeData\Assertion;
 use BoShurik\OrangeData\Model\FactoryTrait;
 use BoShurik\OrangeData\Model\JsonSerializableTrait;
 
@@ -54,7 +54,8 @@ class Document implements \JsonSerializable
         $this->content = $content;
 
         Assertion::betweenLength($this->id, 1, 64);
-        Assertion::inArray(\strlen($this->inn), [10, 12]);
+        Assertion::inn($this->inn);
+
     }
 
     public function getId(): string

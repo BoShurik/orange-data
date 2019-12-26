@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Model\Document;
 
-use Assert\Assertion;
+use BoShurik\OrangeData\Assertion;
 use BoShurik\OrangeData\Model\FactoryTrait;
 use BoShurik\OrangeData\Model\JsonSerializableTrait;
 
@@ -285,7 +285,7 @@ class Content implements \JsonSerializable
     public function setPaymentOperatorINN(?string $paymentOperatorINN): Content
     {
         if ($paymentOperatorINN !== null) {
-            Assertion::inArray(\strlen($paymentOperatorINN), [10, 12]);
+            Assertion::inn($paymentOperatorINN);
         }
 
         $this->paymentOperatorINN = $paymentOperatorINN;
@@ -385,7 +385,7 @@ class Content implements \JsonSerializable
     public function setCustomerINN(?string $customerINN): Content
     {
         if ($customerINN !== null) {
-            Assertion::inArray(\strlen($customerINN), [10, 12]);
+            Assertion::inn($customerINN);
         }
 
         $this->customerINN = $customerINN;
