@@ -21,6 +21,11 @@ class ClientBuilder
     private $privateKey;
 
     /**
+     * @var string|null
+     */
+    private $privateKeyPassword;
+
+    /**
      * @var string
      */
     private $cert;
@@ -57,6 +62,7 @@ class ClientBuilder
 
     public function __construct(
         string $privateKey,
+        ?string $privateKeyPassword,
         string $cert,
         ?string $certPassword,
         string $sslKey,
@@ -65,6 +71,7 @@ class ClientBuilder
         string $endpoint = 'https://api.orangedata.ru:12003/api/v2/'
     ) {
         $this->privateKey = $privateKey;
+        $this->privateKeyPassword = $privateKeyPassword;
         $this->cert = $cert;
         $this->certPassword = $certPassword;
         $this->sslKey = $sslKey;
@@ -82,7 +89,7 @@ class ClientBuilder
             RequestOptions::VERIFY => $this->verify,
         ]);
 
-        $http = new HttpClient($guzzle, new Signer($this->privateKey), $this->logger);
+        $http = new HttpClient($guzzle, new Signer($this->privateKey, $this->privateKeyPassword), $this->logger);
 
         return new Client($http);
     }

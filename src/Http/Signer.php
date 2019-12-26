@@ -16,14 +16,21 @@ class Signer
      */
     private $privateKeyPath;
 
-    public function __construct(string $privateKeyPath)
+    /**
+     * @var string|null
+     */
+    private $password;
+
+    public function __construct(string $privateKeyPath, ?string $password = null)
     {
         $this->privateKeyPath = $privateKeyPath;
+        $this->password = $password;
     }
 
     public function sign(string $data): string
     {
-        if (!openssl_sign($data, $sign, file_get_contents($this->privateKeyPath), OPENSSL_ALGO_SHA256)) {
+        $privateKey = openssl_get_privatekey(sprintf('file://%s', $this->privateKeyPath), $this->password);
+        if (!openssl_sign($data, $sign, $privateKey, OPENSSL_ALGO_SHA256)) {
             throw new SignException();
         }
 
