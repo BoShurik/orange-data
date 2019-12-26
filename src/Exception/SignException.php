@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Exception;
 
-class SignException extends \RuntimeException
+class SignException extends OrangeDataException
 {
 
 }

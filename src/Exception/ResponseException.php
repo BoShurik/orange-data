@@ -7,7 +7,7 @@
 
 namespace BoShurik\OrangeData\Exception;
 
-class ResponseException extends \RuntimeException
+class ResponseException extends OrangeDataException
 {
 
 }
