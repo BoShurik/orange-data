@@ -26,7 +26,7 @@ class DocumentStatusTest extends ModelTestCase
             'fsNumber' => 'fsNumber',
             'ofdName' => 'ofdName',
             'ofdWebsite' => 'ofdWebsite',
-            'ofdINN' => '0123456789',
+            'ofdinn' => '0123456789',
             'fnsWebsite' => 'fnsWebsite',
             'companyINN' => '0123456789',
             'companyName' => 'companyName',
@@ -91,5 +91,27 @@ class DocumentStatusTest extends ModelTestCase
     protected function getMinimalParameters(): array
     {
         return $this->getFullParameters();
+    }
+
+    protected function getFullResults(): array
+    {
+        $results = parent::getFullResults();
+        if (isset($results['ofdinn'])) {
+            $results['ofdINN'] = $results['ofdinn'];
+            unset($results['ofdinn']);
+        }
+
+        return $results;
+    }
+
+    protected function getMinimalResults(): array
+    {
+        $results = parent::getFullResults();
+        if (isset($results['ofdinn'])) {
+            $results['ofdINN'] = $results['ofdinn'];
+            unset($results['ofdinn']);
+        }
+
+        return $results;
     }
 }

@@ -12,7 +12,9 @@ use BoShurik\OrangeData\Model\JsonSerializableTrait;
 
 class DocumentStatus
 {
-    use FactoryTrait;
+    use FactoryTrait {
+        create as private doCreate;
+    }
     use JsonSerializableTrait;
 
     /**
@@ -104,6 +106,17 @@ class DocumentStatus
      * @var string|null
      */
     private $callbackUrl;
+
+    public static function create(array $parameters): self
+    {
+        if (isset($parameters['ofdinn'])) {
+            $parameters['ofdINN'] = $parameters['ofdinn'];
+            unset($parameters['ofdinn']);
+        }
+
+        return self::doCreate($parameters);
+    }
+
 
     public function __construct(
         string $id,
