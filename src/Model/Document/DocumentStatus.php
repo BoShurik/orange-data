@@ -41,14 +41,14 @@ class DocumentStatus
     private $ofdName;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $odfWebsite;
+    private $ofdWebsite;
 
     /**
      * @var string
      */
-    private $odfINN;
+    private $ofdINN;
 
     /**
      * @var string
@@ -111,8 +111,8 @@ class DocumentStatus
         string $deviceRN,
         string $fsNumber,
         string $ofdName,
-        ?string $odfWebsite,
-        string $odfINN,
+        string $ofdWebsite,
+        string $ofdINN,
         string $fnsWebsite,
         string $companyINN,
         string $companyName,
@@ -130,8 +130,8 @@ class DocumentStatus
         $this->deviceRN = $deviceRN;
         $this->fsNumber = $fsNumber;
         $this->ofdName = $ofdName;
-        $this->odfWebsite = $odfWebsite;
-        $this->odfINN = $odfINN;
+        $this->ofdWebsite = $ofdWebsite;
+        $this->ofdINN = $ofdINN;
         $this->fnsWebsite = $fnsWebsite;
         $this->companyINN = $companyINN;
         $this->companyName = $companyName;
@@ -170,14 +170,14 @@ class DocumentStatus
         return $this->ofdName;
     }
 
-    public function getOdfWebsite(): ?string
+    public function getOfdWebsite(): string
     {
-        return $this->odfWebsite;
+        return $this->ofdWebsite;
     }
 
-    public function getOdfINN(): string
+    public function getOfdINN(): string
     {
-        return $this->odfINN;
+        return $this->ofdINN;
     }
 
     public function getFnsWebsite(): string

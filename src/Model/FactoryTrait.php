@@ -56,7 +56,7 @@ trait FactoryTrait
         foreach ($constructorReflectionMethod->getParameters() as $reflectionParameter) {
             if ($reflectionParameter->getClass()) {
                 $fields[$reflectionParameter->getName()] = sprintf('%s%s', $reflectionParameter->allowsNull() ? '?' : '', $reflectionParameter->getClass()->getName());
-            } elseif (!$reflectionParameter->allowsNull()) {
+            } elseif (!$reflectionParameter->isOptional()) {
                 $fields[$reflectionParameter->getName()] = true;
             }
         }
