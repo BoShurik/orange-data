@@ -80,7 +80,7 @@ class ClientBuilder
         $this->endpoint = $endpoint;
     }
 
-    public function build(): Client
+    public function build(): ClientInterface
     {
         $guzzle = new GuzzleClient([
             'base_uri' => rtrim($this->endpoint, '/') . '/',

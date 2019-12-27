@@ -13,7 +13,7 @@ use BoShurik\OrangeData\Model\Correction\CorrectionStatus;
 use BoShurik\OrangeData\Model\Document\Document;
 use BoShurik\OrangeData\Model\Document\DocumentStatus;
 
-class Client
+class Client implements ClientInterface
 {
     /**
      * @var HttpClient
