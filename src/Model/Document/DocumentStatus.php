@@ -41,7 +41,7 @@ class DocumentStatus
     private $ofdName;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $odfWebsite;
 
@@ -101,7 +101,7 @@ class DocumentStatus
     private $fp;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $callbackUrl;
 
@@ -111,7 +111,7 @@ class DocumentStatus
         string $deviceRN,
         string $fsNumber,
         string $ofdName,
-        string $odfWebsite,
+        ?string $odfWebsite,
         string $odfINN,
         string $fnsWebsite,
         string $companyINN,
@@ -123,7 +123,7 @@ class DocumentStatus
         Content $content,
         string $change,
         string $fp,
-        string $callbackUrl
+        ?string $callbackUrl
     ) {
         $this->id = $id;
         $this->deviceSN = $deviceSN;
@@ -170,7 +170,7 @@ class DocumentStatus
         return $this->ofdName;
     }
 
-    public function getOdfWebsite(): string
+    public function getOdfWebsite(): ?string
     {
         return $this->odfWebsite;
     }
@@ -230,7 +230,7 @@ class DocumentStatus
         return $this->fp;
     }
 
-    public function getCallbackUrl(): string
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
