@@ -49,7 +49,9 @@ class Position implements \JsonSerializable
     public const SUBJECT_TYPE_DEPOSIT = 19;
 
     use JsonSerializableTrait;
-    use FactoryTrait;
+    use FactoryTrait {
+        getMapping as doGetMapping;
+    }
 
     /**
      * @var string
@@ -332,5 +334,13 @@ class Position implements \JsonSerializable
         $this->excise = $excise;
 
         return $this;
+    }
+
+    protected static function getMapping(\ReflectionClass $reflectionClass): array
+    {
+        $mapping = self::doGetMapping($reflectionClass);
+        $mapping['agentInfo'] = '?'.Agent::class;
+
+        return $mapping;
     }
 }

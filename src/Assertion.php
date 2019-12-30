@@ -7,6 +7,9 @@
 
 namespace BoShurik\OrangeData;
 
+/**
+ * @method static bool nullOrInn(string|null $value, string|callable $message = null, string $propertyPath = null) Assert that the value is inn or that the value is null.
+ */
 class Assertion extends \Assert\Assertion
 {
     const INVALID_INN = 1024;

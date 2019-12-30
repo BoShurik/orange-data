@@ -442,5 +442,4 @@ class Content implements \JsonSerializable
 
         return $mapping;
     }
-
 }
