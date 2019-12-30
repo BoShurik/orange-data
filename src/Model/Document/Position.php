@@ -339,6 +339,7 @@ class Position implements \JsonSerializable
     protected static function getMapping(\ReflectionClass $reflectionClass): array
     {
         $mapping = self::doGetMapping($reflectionClass);
+        $mapping['supplierInfo'] = '?'.Supplier::class;
         $mapping['agentInfo'] = '?'.Agent::class;
 
         return $mapping;

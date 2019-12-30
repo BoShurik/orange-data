@@ -27,7 +27,10 @@ class PositionTest extends ModelTestCase
             'paymentMethodType' => 1,
             'paymentSubjectType' => 1,
             'nomenclatureCode' => 'nomenclatureCode',
-//            'supplierInfo' => 'supplierInfo',
+            'supplierInfo' => [
+                'name' => 'name',
+                'phoneNumbers' => ['79991112233'],
+            ],
             'supplierINN' => '1234567890',
             'agentType' => 127,
             'agentInfo' => [
