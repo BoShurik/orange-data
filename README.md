@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.com/BoShurik/orange-data.svg?branch=master)][2]
 
+## API Version
+
+2.25.0
+
 ## Usage
 
 ```php
