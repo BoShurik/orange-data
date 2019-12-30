@@ -55,7 +55,6 @@ class Document implements \JsonSerializable
 
         Assertion::betweenLength($this->id, 1, 64);
         Assertion::inn($this->inn);
-
     }
 
     public function getId(): string
