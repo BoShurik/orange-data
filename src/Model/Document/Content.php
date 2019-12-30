@@ -439,6 +439,7 @@ class Content implements \JsonSerializable
     {
         $mapping = self::doGetMapping($reflectionClass);
         $mapping['positions'] = Position::class.'[]';
+        $mapping['additionalUserAttribute'] = '?'.UserAttribute::class;
 
         return $mapping;
     }

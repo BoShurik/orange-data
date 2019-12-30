@@ -61,7 +61,10 @@ class ContentTest extends ModelTestCase
             'paymentOperatorAddress' => 'paymentOperatorAddress',
             'paymentOperatorINN' => '1234567890',
             'supplierPhoneNumbers' => ['1234567890'],
-//            'additionalUserAttribute' => 'additionalUserAttribute',
+            'additionalUserAttribute' => [
+                'name' => 'name',
+                'value' => 'value',
+            ],
             'automatNumber' => 'automatNumber',
             'settlementAddress' => 'settlementAddress',
             'settlementPlace' => 'settlementPlace',
