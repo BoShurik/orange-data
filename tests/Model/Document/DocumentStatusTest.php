@@ -12,6 +12,27 @@ use BoShurik\OrangeData\Tests\Model\ModelTestCase;
 
 class DocumentStatusTest extends ModelTestCase
 {
+    public function testJsonSerializableWithoutCallbackUrl()
+    {
+        $class = $this->getClass();
+        $parameters = $this->getFullParameters();
+        unset($parameters['callbackUrl']);
+
+        /** @var \JsonSerializable $model */
+        $model = $class::create($parameters);
+        $data = $model->jsonSerialize();
+
+        $this->assertIsArray($data);
+
+        $expectedResults = $this->getFullResults();
+        unset($expectedResults['callbackUrl']);
+
+        foreach ($expectedResults as $name => $value) {
+            $this->assertArrayHasKey($name, $data);
+            $this->assertSame($data[$name], $value);
+        }
+    }
+
     protected function getClass(): string
     {
         return DocumentStatus::class;

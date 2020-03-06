@@ -136,7 +136,7 @@ class DocumentStatus implements \JsonSerializable
         Content $content,
         string $change,
         string $fp,
-        ?string $callbackUrl
+        ?string $callbackUrl = null
     ) {
         $this->id = $id;
         $this->deviceSN = $deviceSN;
@@ -246,5 +246,10 @@ class DocumentStatus implements \JsonSerializable
     public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
+    }
+
+    public function setCallbackUrl(?string $callbackUrl): void
+    {
+        $this->callbackUrl = $callbackUrl;
     }
 }
