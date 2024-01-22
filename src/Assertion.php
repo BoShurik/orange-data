@@ -16,6 +16,15 @@ class Assertion extends \Assert\Assertion
 
     public static function inn($value, $message = null, string $propertyPath = null): bool
     {
+        if (!$value) {
+            $message = \sprintf(
+                static::generateMessage($message ?: 'Value "%s" is not a valid INN'),
+                static::stringify($value)
+            );
+
+            throw static::createException($value, $message, static::INVALID_INN, $propertyPath);
+        }
+
         try {
             static::inArray(\strlen($value), [10, 12], null, $propertyPath);
         } catch (\Throwable $e) {

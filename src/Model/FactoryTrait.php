@@ -54,8 +54,17 @@ trait FactoryTrait
         $constructorReflectionMethod = $reflectionClass->getMethod('__construct');
         // Assume properties and constructor parameters have same names
         foreach ($constructorReflectionMethod->getParameters() as $reflectionParameter) {
-            if ($reflectionParameter->getClass()) {
-                $fields[$reflectionParameter->getName()] = sprintf('%s%s', $reflectionParameter->allowsNull() ? '?' : '', $reflectionParameter->getClass()->getName());
+            $class = null;
+            if (PHP_VERSION_ID >= 80000) {
+                $type = $reflectionParameter->getType();
+                if ($type && !$type->isBuiltin()) {
+                    $class = $type->getName();
+                }
+            } else {
+                $class = $reflectionParameter->getClass()->getName();
+            }
+            if ($class) {
+                $fields[$reflectionParameter->getName()] = sprintf('%s%s', $reflectionParameter->allowsNull() ? '?' : '', $class);
             } elseif (!$reflectionParameter->isOptional()) {
                 $fields[$reflectionParameter->getName()] = true;
             }

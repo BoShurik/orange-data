@@ -9,6 +9,7 @@ namespace BoShurik\OrangeData\Model;
 
 trait JsonSerializableTrait
 {
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return array_filter(array_map(function ($value) {
