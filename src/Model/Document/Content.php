@@ -134,6 +134,11 @@ class Content implements \JsonSerializable
     private $senderEmail;
 
     /**
+     * @var bool|null
+     */
+    private $isInternetStore;
+
+    /**
      * @param Position[]|iterable $positions
      */
     public function __construct(
@@ -431,6 +436,18 @@ class Content implements \JsonSerializable
         Assertion::nullOrBetweenLength($senderEmail, 1, 64);
 
         $this->senderEmail = $senderEmail;
+
+        return $this;
+    }
+
+    public function getIsInternetStore(): ?bool
+    {
+        return $this->isInternetStore;
+    }
+
+    public function setInternetStore(?bool $isInternetStore): Content
+    {
+        $this->isInternetStore = $isInternetStore;
 
         return $this;
     }
