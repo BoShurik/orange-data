@@ -445,7 +445,7 @@ class Content implements \JsonSerializable
         return $this->isInternetStore;
     }
 
-    public function setInternetStore(?bool $isInternetStore): Content
+    public function setIsInternetStore(?bool $isInternetStore): Content
     {
         $this->isInternetStore = $isInternetStore;
 
